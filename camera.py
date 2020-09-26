@@ -5,7 +5,7 @@ import datetime as dt
 
 camera = PiCamera()
 #camera.rotation = 180
-count = 701
+count = 101
 camera.resolution = (1280, 960)  # 0.3MP
 imagelist = ['none','watercolor','sketch', 
             'cartoon', 'negative', 'emboss', 
@@ -18,7 +18,7 @@ for effect in imagelist:
     camera.annotate_text_size = 75
     datetimestamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     camera.annotate_text = datetimestamp + '\n' + "Effect: %s" % effect
-    camera.capture('/home/pi/Desktop/Camera/' + str(count) +" " + effect +'.jpg')
+    camera.capture('/home/pi/picamera/' + str(count) +" " + effect +'.jpg')
     count = count + 1
     sleep(2)
 camera.stop_preview()
