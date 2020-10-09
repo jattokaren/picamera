@@ -19,14 +19,9 @@ for effect in imageEffectlist:
     camera.annotate_text_size = 75
     datetimestamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     camera.annotate_text = datetimestamp + '\n' + "Effect: %s" % effect
-    camera.capture('/home/pi/picamera/' + datetimestamp + " " + effect +'.jpg')
+    camera.capture('/home/pi/picamera/output/' + datetimestamp + " " + effect +'.jpg')
 
     sleep(2)
 camera.stop_preview()
 
-#for effect in camera.IMAGE_EFFECTS:
-#camera.start_preview()
-#camera.image_effect = 'negative'
-#sleep(5)
-#camera.capture('/home/pi/Desktop/negative.jpg')
-#camera.stop_preview()
+

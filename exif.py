@@ -1,39 +1,56 @@
+import os
+import exif
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-ImageFileName = "107 oilpaint.jpg"
+rootdir = "/home/pi/picamera/output"
+filelist = list()
+pathfilelist = list()
 
-image = Image.open(ImageFileName)
+def main():
+	try:
+		for subdir, dirs, files in os.walk(rootdir):
+			for filename in files:
+				if not filename.endswith('.py'):
+					filelist.append(filename)
+					print(filename)
+					filesize = os.path.getsize(subdir+'/'+filename)
+					print(filesize)
+					pathfilelist.append(os.path.join(subdir, filename))
+					filepath =  os.path.join(subdir, filename)
+					print(filepath)
+					exif_model(filepath)
+						
+	except IOError as ioe:
+		print(ioe)
+		
+def exif_model(filepath):
+	try:
+		image = Image.open(filepath)
+		EXIF_data = image._getexif()
+		print('Make = ' + EXIF_data.get(271))		#Make
+		print('Model = ' + EXIF_data.get(272))		#Model
+		print('Image DateTime = ' + EXIF_data.get(36867))		#Image Date Time Original
+		print('Image Width = ' + str(EXIF_data.get(40962)))		#Image Width
+		print('Image Height = ' + str(EXIF_data.get(40963)))		#Image Height
+		print(EXIF_data.get(33434))		#Exposure Time
+		print(EXIF_data.get(37386))		#Focal Length
+		print(EXIF_data.get(34855))		#ISO
+		print(EXIF_data.get(33437))		#Aperture
+		image.close()
+		
+		return EXIF_data
+	except IOError as ioe:
+		raise
+		
+main()
 
-dataExifDictionary = image._getexif()
 
-print(dataExifDictionary)
+print('*** Get file list length ***')
+print(str(len(filelist)) + " = the # of files in list")
+print("*** Here are the last 5 objects in file list ***")
+print(filelist[:5])
 
-#An example Dictionary of Image EXIF data
-exampleDictionary = {256: 1280, 257: 960, 37378: (20000, 10000), 
-	36867: '2020:10:01 14:55:00', 36868: '2020:10:01 14:55:00', 
-	37381: (20000, 10000), 36864: b'0220', 37121: b'\x01\x02\x03\x00', 
-	37385: 0, 37386: (30390, 10000), 40962: 1280, 
-	271: 'RaspberryPi', 272: 'RP_imx219', 
-	531: 1, 282: (72, 1), 283: (72, 1), 33434: (10785, 1000000), 
-	40965: 906, 34850: 3, 40961: 1, 34855: 50, 296: 2, 41987: 0, 
-	37383: 2, 33437: (20000, 10000), 306: '2020:10:01 14:55:00', 
-	37377: (6534830, 1000000), 40960: b'0100', 40963: 960, 
-	41986: 0, 34665: 192, 37379: (272, 100), 
-	37500: b'ev=-1 mlux=-1 exp=10785 ag=256 focus=255 gain_r=1.347 gain_b=2.316 greenness=0 ccm=6096,-1964,-30,-1274,5632,-258,264,-3794,7632,0,0,0 md=0 tg=272 272 oth=0 0 b=0 f=272 272 fi=0 ISP Build Date: Aug 15 2019, 12:08:19 VC_BUILD_ID_VERSION: 0e6daa5106dd4164474616408e0dc24f997ffcf3 (clean) VC_BUILD_ID_USER: dom VC_BUILD_ID_BRANCH: master '
-	}
-
-#Exif keys of interest
-myKeysOfInterest = [272,36867,40962,40963,37386,34855,33434,33437]
-
-#Iterates thru the Dictionary and only gives my keys of interest
-myExifDictionary = { each_key: dataExifDictionary[each_key] for each_key in myKeysOfInterest }
-
-#Prints both Keys & Values in my Dictionary
-print(myExifDictionary)
-
-#Prints only Dictionary Keys
-print(myExifDictionary.keys())
-
-#Prints only Dictionary Values
-print(myExifDictionary.values())
+print(len(pathfilelist))
+print("*** This is the 6th object in the path/file list ***")
+print("pathfilelist[5]: " + pathfilelist[5])
