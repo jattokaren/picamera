@@ -6,7 +6,7 @@ import datetime as dt
 camera = PiCamera()
 #camera.rotation = 180
 
-camera.resolution = (1280, 960)  # 0.3MP
+camera.resolution = (2560, 1920)  # 0.3MP
 # 22 Total Image Effects
 imageEffectlist = ['none','watercolor','sketch', 
             'cartoon', 'negative', 'emboss', 
