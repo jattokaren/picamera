@@ -33,7 +33,7 @@ def getFilepaths():
         print("For Loop going to all filepaths...")
         for subdir, dirs, files in os.walk(rootdir):
             for filename in files:
-                if not (filename.endswith('.DS_Store') or filename.endswith('.picasa.ini')):
+                if not (filename.endswith('.DS_Store') or filename.endswith('.h264')):
                     print(filename)                                   #see filename
                     filesize = os.path.getsize(subdir+'/'+filename)
                     print(filesize)                                   #see file save in bytes
